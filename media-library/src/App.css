@@ -1,0 +1,40 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.mainSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+
+/* Add section only */
+.addSection {
+  background: #f7f7f7;
+}
+
+/* List section only */
+.listSection {
+  background: #fafafa;
+}
