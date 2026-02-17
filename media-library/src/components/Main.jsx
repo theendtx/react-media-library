@@ -1,21 +1,33 @@
 import { useState, useEffect } from "react"
 import AddMediaForm from "./AddMediaForm"
-import LibraryList from "./LibraryList"
+import LibraryContent from "./LibraryContent"
 
 function Main() {
-  // 🔹 real state
   const [items, setItems] = useState(() => {
-  const saved = localStorage.getItem("mediaItems")
-  return saved ? JSON.parse(saved) : []
-})
+    const saved = localStorage.getItem("mediaItems")
+    if (!saved) return []
+
+    try {
+      return JSON.parse(saved)
+    } catch {
+      return []
+    }
+  })
   const [search, setSearch] = useState("")
+
+  const handleAddItem = (newItem) => {
+    setItems((prev) => [...prev, newItem])
+  }
+
+  const handleDelete = (id) => {
+    setItems((prev) => prev.filter((item) => item.id !== id))
+  }
 
   useEffect(() => {
     localStorage.setItem("mediaItems", JSON.stringify(items))
-  }, [items]) 
+  }, [items])
 
-  // 🔹 derived state
-  const filteredItems = items.filter(item =>
+  const filteredItems = items.filter((item) =>
     item.title.toLowerCase().includes(search.toLowerCase())
   )
 
@@ -23,7 +35,7 @@ function Main() {
     <main className="main page container">
       <section className="mainSection addSection">
         <h2>Add new item</h2>
-        <AddMediaForm setItems={setItems} />
+        <AddMediaForm onAddItem={handleAddItem} />
       </section>
 
       <section className="mainSection listSection">
@@ -33,17 +45,14 @@ function Main() {
           type="text"
           placeholder="Search..."
           value={search}
-          onChange={e => setSearch(e.target.value)}
+          onChange={(e) => setSearch(e.target.value)}
         />
 
-        {items.length === 0 ? (
-  <p>Your library is empty</p>
-) : filteredItems.length === 0 ? (
-  <p>No results found</p>
-) : (
-  <LibraryList items={filteredItems} />
-)}
-
+        <LibraryContent
+          items={items}
+          filteredItems={filteredItems}
+          onDelete={handleDelete}
+        />
       </section>
     </main>
   )

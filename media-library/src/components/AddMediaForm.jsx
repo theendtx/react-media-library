@@ -1,19 +1,18 @@
 import { useState } from "react"
 
-function AddMediaForm({ setItems }) {
+function AddMediaForm({ onAddItem }) {
   const [title, setTitle] = useState("")
 
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    if (!title.trim()) return
+    const trimmedTitle = title.trim()
+    if (!trimmedTitle) return
 
-    const newItem = {
+    onAddItem({
       id: Date.now(),
-      title: title
-    }
-
-    setItems(prev => [...prev, newItem])
+      title: trimmedTitle
+    })
     setTitle("")
   }
 
@@ -23,7 +22,7 @@ function AddMediaForm({ setItems }) {
         type="text"
         placeholder="Title"
         value={title}
-        onChange={e => setTitle(e.target.value)}
+        onChange={(e) => setTitle(e.target.value)}
       />
       <button type="submit">Add</button>
     </form>
